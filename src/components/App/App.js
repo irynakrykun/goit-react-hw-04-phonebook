@@ -6,7 +6,9 @@ import ContactList from '../ContactList/ContactList';
 import initialContacts from '../contacts.json';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts, setContacts] = useState(()=>
+    JSON.parse(localStorage.getItem('contacts'))?? initialContacts);
+
   const [filter, setFilter] = useState('');
 
   const addContact = values => {
@@ -26,15 +28,8 @@ export const App = () => {
     setFilter(e.currentTarget.value);
   };
 
-  useEffect(() => {
-    const savecontacts = localStorage.getItem('contacts');
-    if (savecontacts !== null) {
-      const parsedContacts = JSON.parse(savecontacts);
-      setContacts(parsedContacts);
-    } else {
-      console.log('Not availabe');
-    }
-  }, []);
+  
+
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
